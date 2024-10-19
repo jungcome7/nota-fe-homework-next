@@ -8,3 +8,11 @@ type GetChatsResponse = {
 export function getChats() {
   return api.get<GetChatsResponse>('/chats');
 }
+
+type GetChatResponse = {
+  data: Chat;
+};
+
+export function getChat(chatId: string) {
+  return api.get<GetChatResponse>(`/chats/${chatId}`);
+}
