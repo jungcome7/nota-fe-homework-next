@@ -10,4 +10,19 @@ export default defineConfig({
   outdir: 'styled-system',
 
   jsxFramework: 'react',
+
+  theme: {
+    extend: {
+      keyframes: {
+        'dot-blink': {
+          '0%, 80%, 100%': {
+            transform: 'scale(0)',
+          },
+          '40%': {
+            transform: 'scale(1)',
+          },
+        },
+      },
+    },
+  },
 });
