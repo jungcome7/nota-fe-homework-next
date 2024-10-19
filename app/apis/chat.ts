@@ -1,4 +1,4 @@
-import { Chat } from '../models/chat';
+import { Chat, ChatModel } from '../models/chat';
 import api from './config';
 
 type GetChatsResponse = {
@@ -15,4 +15,12 @@ type GetChatResponse = {
 
 export function getChat(chatId: string) {
   return api.get<GetChatResponse>(`/chats/${chatId}`);
+}
+
+type GetChatModelsResponse = {
+  data: ChatModel[];
+};
+
+export function getChatModels() {
+  return api.get<GetChatModelsResponse>('/chat_model');
 }
