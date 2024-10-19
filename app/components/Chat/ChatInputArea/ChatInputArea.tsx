@@ -1,11 +1,11 @@
 'use client';
 
-import { addChat, createChat, GetChatResponse } from '@/app/apis/chat';
+import { addChat, createChat, getChat, GetChatResponse } from '@/app/apis/chat';
 import { inputValueAtom, selectedChatIdAtom, selectedChatModelIdAtom } from '@/app/atoms/chat';
 import { css } from '@/styled-system/css';
 import { HStack } from '@/styled-system/jsx';
 import { Button, TextArea } from '@radix-ui/themes';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import { useAtom, useAtomValue } from 'jotai';
 import { useRef } from 'react';
@@ -23,7 +23,22 @@ function ChatInputArea({ onSubmit }: Props) {
   const selectedChatModelId = useAtomValue(selectedChatModelIdAtom);
   const [inputValue, setInputValue] = useAtom(inputValueAtom);
 
-  const isDisabled = selectedChatModelId === null;
+  const { data: chat } = useQuery({
+    queryKey: ['chat', selectedChatId],
+    queryFn: async () => {
+      if (selectedChatId === null) {
+        throw new Error('No chat selected');
+      }
+
+      return await getChat(selectedChatId);
+    },
+    enabled: selectedChatId !== null,
+    select: (response) => response.data.data,
+  });
+
+  const isResponding = chat?.dialogues.some((dialogue) => dialogue.completion === undefined);
+
+  const isDisabled = selectedChatModelId === null || isResponding;
 
   const { mutate: mutateAddChat } = useMutation({
     mutationKey: ['add_chat'],
