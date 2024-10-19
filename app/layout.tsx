@@ -33,7 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Theme accentColor="gray" radius="large">
-          <HStack height="100vh">{children}</HStack>
+          <HStack alignItems="start">{children}</HStack>
         </Theme>
       </body>
     </html>
