@@ -130,6 +130,11 @@ function ChatInputArea() {
         ref={textAreaRef}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.metaKey && e.key === 'Enter') {
+            handleSubmit();
+          }
+        }}
         className={css({ width: '100%', position: 'relative', pr: '60px', py: '6px' })}
         disabled={isDisabled}
       />
