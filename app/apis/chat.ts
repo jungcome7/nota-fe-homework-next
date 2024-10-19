@@ -1,7 +1,7 @@
 import { Chat, ChatModel } from '../models/chat';
 import api from './config';
 
-type GetChatsResponse = {
+export type GetChatsResponse = {
   data: Chat[];
 };
 
@@ -9,7 +9,7 @@ export function getChats() {
   return api.get<GetChatsResponse>('/chats');
 }
 
-type GetChatResponse = {
+export type GetChatResponse = {
   data: Chat;
 };
 
@@ -23,4 +23,29 @@ type GetChatModelsResponse = {
 
 export function getChatModels() {
   return api.get<GetChatModelsResponse>('/chat_model');
+}
+
+type AddChatRequest = {
+  chatId: string;
+  prompt: string;
+};
+
+type AddChatResponse = {
+  data: Chat;
+};
+
+export function addChat({ chatId, prompt }: AddChatRequest) {
+  return api.post<AddChatResponse>(`/chats/${chatId}/dialogues`, { prompt });
+}
+
+type CreateChatRequest = {
+  chatModelId: string;
+};
+
+type CreateChatResponse = {
+  data: Chat[];
+};
+
+export function createChat({ chatModelId }: CreateChatRequest) {
+  return api.post<CreateChatResponse>('/chats', { chat_model_id: chatModelId });
 }

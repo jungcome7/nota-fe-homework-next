@@ -57,29 +57,33 @@ function ChatItemList() {
 
   return (
     <ScrollArea ref={scrollAreaRef} scrollbars="vertical" type="scroll" onScroll={handleScroll}>
-      <VStack width="100%">
-        <VStack width="800px" height="100%" gap="30px" alignSelf="center">
-          {dialogues.map((dialogue) => (
-            <Fragment key={dialogue.dialogue_id}>
-              <PromptChatItem message={dialogue.prompt} />
-              <CompletionChatItem message={dialogue.completion} />
-            </Fragment>
-          ))}
+      {selectedChatId === null ? (
+        <VStack />
+      ) : (
+        <VStack width="100%">
+          <VStack width="800px" height="100%" gap="30px" alignSelf="center">
+            {dialogues.map((dialogue) => (
+              <Fragment key={dialogue.dialogue_id}>
+                <PromptChatItem message={dialogue.prompt} />
+                <CompletionChatItem message={dialogue.completion} />
+              </Fragment>
+            ))}
+          </VStack>
+          {showScrollToBottomButton && (
+            <IconButton
+              onClick={handleScrollToBottom}
+              className={css({
+                position: 'absolute',
+                bottom: '0',
+                borderRadius: '50%',
+                cursor: 'pointer',
+              })}
+            >
+              <ArrowDownIcon />
+            </IconButton>
+          )}
         </VStack>
-        {showScrollToBottomButton && (
-          <IconButton
-            onClick={handleScrollToBottom}
-            className={css({
-              position: 'absolute',
-              bottom: '0',
-              borderRadius: '50%',
-              cursor: 'pointer',
-            })}
-          >
-            <ArrowDownIcon />
-          </IconButton>
-        )}
-      </VStack>
+      )}
     </ScrollArea>
   );
 }

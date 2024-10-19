@@ -1,7 +1,7 @@
 export interface Dialogue {
   dialogue_id: string;
   prompt: string;
-  completion: string;
+  completion: string | undefined;
 }
 
 export interface Chat {
