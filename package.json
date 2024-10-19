@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npx tsx watch ./lib/mock/http.ts\" \"next dev\"",
+    "prepare": "panda codegen",
+    "dev": "panda codegen && concurrently \"npx tsx watch ./lib/mock/http.ts\" \"next dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
