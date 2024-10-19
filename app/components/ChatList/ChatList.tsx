@@ -1,4 +1,4 @@
-import { VStack } from '@/styled-system/jsx';
+import { HStack, VStack } from '@/styled-system/jsx';
 import ChatListItem from './ChatListItem';
 import { ScrollArea } from '@radix-ui/themes';
 import { css } from '@/styled-system/css';
@@ -11,9 +11,10 @@ function ChatList() {
       type="scroll"
       className={css({
         width: '300px',
+        height: '100vh',
       })}
     >
-      <VStack width="100%" height="100%" padding="20px" bgColor="gray.50">
+      <VStack width="300px" height="100%" padding="20px" bgColor="gray.50">
         <CreateChatButton />
         {Array(20)
           .fill(0)
