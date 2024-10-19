@@ -1,9 +1,9 @@
-import { selectedChatIdAtom } from '@/app/atoms/chat';
+import { inputValueAtom, selectedChatIdAtom } from '@/app/atoms/chat';
 import { Chat } from '@/app/models/chat';
 import { css } from '@/styled-system/css';
 import { VStack } from '@/styled-system/jsx';
 import { Text } from '@radix-ui/themes';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 
 interface Props {
   chat: Chat;
@@ -13,11 +13,13 @@ function ChatListItem({ chat }: Props) {
   const firstPrompt = chat.dialogues[0].prompt;
 
   const [selectedChatId, setSelectedChatId] = useAtom(selectedChatIdAtom);
+  const setInputValue = useSetAtom(inputValueAtom);
 
   const isSelected = selectedChatId === chat.chat_id;
 
   const handleClick = () => {
     setSelectedChatId(chat.chat_id);
+    setInputValue('');
   };
 
   return (
