@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import { Theme } from '@radix-ui/themes';
 import './styles/globals.css';
 import { HStack } from '@/styled-system/jsx';
+import { ReactQueryProvider } from './components/ReactQueryProvider';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -32,9 +33,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Theme accentColor="gray" radius="large">
-          <HStack alignItems="start">{children}</HStack>
-        </Theme>
+        <ReactQueryProvider>
+          <Theme accentColor="gray" radius="large">
+            <HStack alignItems="start">{children}</HStack>
+          </Theme>
+        </ReactQueryProvider>
       </body>
     </html>
   );
