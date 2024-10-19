@@ -15,8 +15,6 @@ function ChatList() {
     select: (response) => response.data.data,
   });
 
-  console.log({ chats });
-
   return (
     <ScrollArea
       scrollbars="vertical"
@@ -26,10 +24,10 @@ function ChatList() {
         height: '100vh',
       })}
     >
-      <VStack width="300px" height="100%" padding="20px" bgColor="gray.50">
+      <VStack width="300px" height="100%" padding="20px" bgColor="gray.50" gap="4px">
         <CreateChatButton />
         {chats.map((chat) => (
-          <ChatListItem key={chat.chat_id} isSelected={false} chat={chat} />
+          <ChatListItem key={chat.chat_id} chat={chat} />
         ))}
       </VStack>
     </ScrollArea>
