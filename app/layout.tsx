@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { Theme } from '@radix-ui/themes';
 import './styles/globals.css';
 
 const geistSans = localFont({
@@ -29,7 +30,11 @@ export default function RootLayout({
     .then((res) => console.log(res));
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Theme accentColor="gray" radius="large">
+          {children}
+        </Theme>
+      </body>
     </html>
   );
 }
