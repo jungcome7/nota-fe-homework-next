@@ -8,8 +8,11 @@ import { Button, TextArea } from '@radix-ui/themes';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import { useAtom, useAtomValue } from 'jotai';
+import { useRef } from 'react';
 
 function ChatInputArea() {
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
   const queryClient = useQueryClient();
 
   const [selectedChatId, setSelectedChatId] = useAtom(selectedChatIdAtom);
@@ -74,6 +77,8 @@ function ChatInputArea() {
   });
 
   const handleSubmit = () => {
+    textAreaRef.current?.focus();
+
     if (selectedChatId === null) {
       if (selectedChatModelId === null) {
         throw new Error('No chat model selected');
@@ -122,6 +127,7 @@ function ChatInputArea() {
   return (
     <HStack width="800px" position="relative" mb="20px" alignSelf="center">
       <TextArea
+        ref={textAreaRef}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         className={css({ width: '100%', position: 'relative', pr: '60px', py: '6px' })}
