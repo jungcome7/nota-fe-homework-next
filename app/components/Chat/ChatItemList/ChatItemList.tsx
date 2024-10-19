@@ -1,9 +1,8 @@
-'use client';
 import { VStack } from '@/styled-system/jsx';
 import PromptChatItem from './PromptChatItem';
 import CompletionChatItem from './CompletionChatItem';
 import { IconButton, ScrollArea } from '@radix-ui/themes';
-import { Fragment, UIEventHandler, useRef, useState } from 'react';
+import { forwardRef, Fragment, UIEventHandler, useState } from 'react';
 import { ArrowDownIcon } from '@radix-ui/react-icons';
 import { css } from '@/styled-system/css';
 import { useAtomValue } from 'jotai';
@@ -11,7 +10,11 @@ import { selectedChatIdAtom } from '@/app/atoms/chat';
 import { useQuery } from '@tanstack/react-query';
 import { getChat } from '@/app/apis/chat';
 
-function ChatItemList() {
+interface Props {
+  onScrollToBottom: () => void;
+}
+
+const ChatItemList = forwardRef<HTMLDivElement, Props>(function ({ onScrollToBottom }, ref) {
   const selectedChatId = useAtomValue(selectedChatIdAtom);
 
   const { data: chat } = useQuery({
@@ -28,8 +31,6 @@ function ChatItemList() {
   });
 
   const dialogues = chat?.dialogues ?? [];
-
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const [showScrollToBottomButton, setShowScrollToBottomButton] = useState(false);
 
@@ -48,15 +49,8 @@ function ChatItemList() {
     }
   };
 
-  const handleScrollToBottom = () => {
-    scrollAreaRef.current?.scrollTo({
-      top: scrollAreaRef.current.scrollHeight,
-      behavior: 'smooth',
-    });
-  };
-
   return (
-    <ScrollArea ref={scrollAreaRef} scrollbars="vertical" type="scroll" onScroll={handleScroll}>
+    <ScrollArea ref={ref} scrollbars="vertical" type="scroll" onScroll={handleScroll}>
       {selectedChatId === null ? (
         <VStack />
       ) : (
@@ -71,7 +65,7 @@ function ChatItemList() {
           </VStack>
           {showScrollToBottomButton && (
             <IconButton
-              onClick={handleScrollToBottom}
+              onClick={onScrollToBottom}
               className={css({
                 position: 'absolute',
                 bottom: '0',
@@ -86,6 +80,8 @@ function ChatItemList() {
       )}
     </ScrollArea>
   );
-}
+});
+
+ChatItemList.displayName = 'ChatItemList';
 
 export default ChatItemList;

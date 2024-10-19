@@ -10,7 +10,11 @@ import { AxiosResponse } from 'axios';
 import { useAtom, useAtomValue } from 'jotai';
 import { useRef } from 'react';
 
-function ChatInputArea() {
+interface Props {
+  onSubmit: () => void;
+}
+
+function ChatInputArea({ onSubmit }: Props) {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const queryClient = useQueryClient();
@@ -77,51 +81,50 @@ function ChatInputArea() {
   });
 
   const handleSubmit = () => {
-    textAreaRef.current?.focus();
-
     if (selectedChatId === null) {
       if (selectedChatModelId === null) {
         throw new Error('No chat model selected');
       }
 
       mutateCreateChat({ chatModelId: selectedChatModelId });
+    } else {
+      mutateAddChat({
+        chatId: selectedChatId,
+        prompt: inputValue,
+      });
 
-      return;
+      queryClient.setQueryData<AxiosResponse<GetChatResponse, unknown>>(
+        ['chat', selectedChatId],
+        (prevData) => {
+          if (prevData === undefined) {
+            return prevData;
+          }
+
+          return {
+            ...prevData,
+            data: {
+              ...prevData.data,
+              data: {
+                ...prevData.data.data,
+                dialogues: [
+                  ...prevData.data.data.dialogues,
+                  {
+                    dialogue_id: 'temporary_id',
+                    prompt: inputValue,
+                    completion: undefined,
+                  },
+                ],
+              },
+            },
+          };
+        },
+      );
+
+      setInputValue('');
     }
 
-    mutateAddChat({
-      chatId: selectedChatId,
-      prompt: inputValue,
-    });
-
-    queryClient.setQueryData<AxiosResponse<GetChatResponse, unknown>>(
-      ['chat', selectedChatId],
-      (prevData) => {
-        if (prevData === undefined) {
-          return prevData;
-        }
-
-        return {
-          ...prevData,
-          data: {
-            ...prevData.data,
-            data: {
-              ...prevData.data.data,
-              dialogues: [
-                ...prevData.data.data.dialogues,
-                {
-                  dialogue_id: 'temporary_id',
-                  prompt: inputValue,
-                  completion: undefined,
-                },
-              ],
-            },
-          },
-        };
-      },
-    );
-
-    setInputValue('');
+    onSubmit();
+    textAreaRef.current?.focus();
   };
 
   return (
