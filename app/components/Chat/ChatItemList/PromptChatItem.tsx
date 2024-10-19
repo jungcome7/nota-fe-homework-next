@@ -9,7 +9,15 @@ interface Props {
 function PromptChatItem({ message }: Props) {
   return (
     <HStack alignSelf="end">
-      <Text className={css({ bgColor: 'gray.100', py: '8px', px: '12px', borderRadius: '8px' })}>
+      <Text
+        className={css({
+          bgColor: 'gray.100',
+          py: '8px',
+          px: '12px',
+          borderRadius: '8px',
+          whiteSpace: 'pre-wrap',
+        })}
+      >
         {message}
       </Text>
       <Avatar size="2" fallback="D" radius="full" />

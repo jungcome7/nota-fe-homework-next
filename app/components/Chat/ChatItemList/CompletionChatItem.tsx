@@ -20,6 +20,7 @@ function CompletionChatItem({ message }: Props) {
             py: '8px',
             px: '12px',
             borderRadius: '8px',
+            whiteSpace: 'pre-wrap',
           })}
         >
           {message}
