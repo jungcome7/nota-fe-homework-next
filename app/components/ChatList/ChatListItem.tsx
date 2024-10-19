@@ -1,12 +1,16 @@
+import { Chat } from '@/app/models/chat';
 import { css } from '@/styled-system/css';
 import { VStack } from '@/styled-system/jsx';
 import { Text } from '@radix-ui/themes';
 
 interface Props {
+  chat: Chat;
   isSelected?: boolean;
 }
 
-function ChatListItem({ isSelected = false }: Props) {
+function ChatListItem({ chat, isSelected = false }: Props) {
+  const firstPrompt = chat.dialogues[0].prompt;
+
   return (
     <VStack
       width="100%"
@@ -28,10 +32,10 @@ function ChatListItem({ isSelected = false }: Props) {
           maxWidth: '240px',
         })}
       >
-        질문이 길 땐 어떻게 나와야 할까요? 말줄임 표시가 되면 좋겠어요.
+        {firstPrompt}
       </Text>
       <Text size="1" className={css({ alignSelf: 'end', color: 'gray.500' })}>
-        모델명
+        {chat.chat_model_name}
       </Text>
     </VStack>
   );
